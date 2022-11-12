@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Math2SVG</h1>
+    <form action="">
+      <fieldset>
+        <legend>Graph Settings</legend>
+        <label for="number-of-points">Number of points: </label>
+        <input type="number" id="tentacles" name="tentacles" min="2" max="20" />
+        <div>
+          <input type="checkbox" id="scales" name="scales" checked />
+          <label for="scales">Labels</label>
+        </div>
+        <div>
+          <input type="checkbox" id="horns" name="horns" />
+          <label for="horns">Horns</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Image Settings</legend>
+        <label for="image-type">Image Type:</label>
+        <div>
+          <input type="radio" name="image-type" value="svg" />
+          <label for="image-type-svg">SVG</label>
+        </div>
+        <div>
+          <input type="radio" name="image-type" value="png" />
+          <label for="image-type-png">PNG</label>
+        </div>
+      </fieldset>
+      <input type="submit" value="Générer" class="submit-button" />
+    </form>
+  </body>
+</html>

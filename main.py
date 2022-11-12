@@ -1,69 +1,268 @@
 import svgwrite, svgwrite.utils
+import cairosvg
 import math
 
-# Colors 
+# TODO Arrowheads
+# TODO Auto-scale export + allow to choose size
+# TODO Display Unicode
+
 transparent = svgwrite.solidcolor.SolidColor(color='white', opacity=None, profile='tiny')
 
-
-def circularGraph(graphInputs: dict):
-    
+def circularGraph(graphInputs: dict, maincolor: str='red', bgcolor: str=transparent, text: bool=True, type: str='svg'):
+    """Generate a graph of points and arrows.
+    \nParameters :
+    \n- `graphInputs`
+    \nKeys 
+    \n\texample : `{"A": ["B", "C", …], "B": ["C", …]}`
+    \n\tA maximum a 3 characters (Latin or Cyrillic) for each point will be properly displayed
+    """
     # Constants
+    global centerxy
     numberofpoints = len(graphInputs)
-    CircularGraphPointRadius = 1/numberofpoints*140+20
+    CircularGraphPointRadius = 140/numberofpoints+20
     CircularGraphRadius = numberofpoints*10+200
-    centerxy = numberofpoints*10+300
     angle = 2*math.pi/len(graphInputs)
+    centerxy = CircularGraphRadius+CircularGraphPointRadius+10
 
+   # for point in 
     for point in enumerate(graphInputs.keys()):
-        graphInputs[point[1]].insert(0, ((math.cos(point[0]*(angle)-math.pi/2)*CircularGraphRadius+centerxy), (math.sin(point[0]*(angle)-math.pi/2)*CircularGraphRadius+centerxy)))
-    print(graphInputs)
-    
+        graphInputs[point[1]].insert(0, ((math.cos(point[0]*(angle)-math.pi/2)*CircularGraphRadius), (math.sin(point[0]*(angle)-math.pi/2)*CircularGraphRadius)))
 
-    dwg = svgwrite.Drawing('test.svg')
+    dwg = svgwrite.Drawing('graph.svg')
+    
+    # arrowhead = dwg.marker(insert=(5,5), size=(100,100), orient="auto") # style='markerWidth="100" markerHeight="70" refX="0" refY="3.5" orient="auto"'
+    # arrowhead.add(dwg.circle((5, 5), r=50, fill='red'))
+    
     # dwg.add(dwg.rect((0, 0), (centerxy*2, centerxy*2), fill='blue'))
 
     for point in enumerate(graphInputs.keys()):
-        print(point)
         for arrow in graphInputs[point[1]][1:]:
-            print(graphInputs[point[1]][0], graphInputs[arrow][0])
-            drawn_arrow = dwg.line(start=(graphInputs[point[1]][0]), end=(graphInputs[arrow][0]))
-            drawn_arrow.fill('white').stroke('white', width=3)
+            angle = math.atan2((graphInputs[arrow][0][1]-graphInputs[point[1]][0][1]),(graphInputs[arrow][0][0]-graphInputs[point[1]][0][0]))
+            drawn_arrow = dwg.line(start=(graphInputs[point[1]][0][0]+CircularGraphPointRadius*math.cos(angle), graphInputs[point[1]][0][1]+CircularGraphPointRadius*math.sin(angle)), end=(graphInputs[arrow][0][0]-CircularGraphPointRadius*math.cos(angle), graphInputs[arrow][0][1]-CircularGraphPointRadius*math.sin(angle)), style='marker-end="url('+arrow+')"')
+            drawn_arrow.stroke(maincolor, width=3)
+            # drawn_arrow.set_markers(arrowhead)
             dwg.add(drawn_arrow)
+    for point in enumerate(graphInputs.keys()):
         small_circle = dwg.circle(center=graphInputs[point[1]][0], r=CircularGraphPointRadius)
-        small_circle.fill('white').stroke('white', width=30/numberofpoints+1)
-        
-        
+        small_circle.fill(transparent).stroke(maincolor, width=30/numberofpoints+1)
         dwg.add(small_circle)
-    print("Image Saved")
+        point_name = dwg.text(point[1], x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]+2], alignment_baseline="middle", text_anchor="middle", style='fill: ' + maincolor + ';  font-size: ' + str(4/5*CircularGraphPointRadius) + 'px; text-transform: capitalize; font-family: Arial, system-ui')
+        dwg.add(point_name)
     dwg.save()
+    print("Image Saved")
+    
 
 if __name__== "__main__":
     circularGraph({
-        "a":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "b":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "c":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "d":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "e":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "f":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "g":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "h":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "i":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "j":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "k":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "l":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "m":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "n":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "o":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "p":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "q":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "r":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "s":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "t":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "u":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "v":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "w":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "x":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "y":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        "z":["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-        # "aa":["a", "b", "c"],"ab":["a", "b", "c"],"ac":["a", "b", "c"],"ad":["a", "b", "c"],"ae":["a", "b", "c"],"af":["a", "b", "c"],"ag":["a", "b", "c"],"ah":["a", "b", "c"],"ai":["a", "b", "c"],"aj":["a", "b", "c"],"ak":["a", "b", "c"],"al":["a", "b", "c"],"am":["a", "b", "c"],"an":["a", "b", "c"],"ao":["a", "b", "c"],"ap":["a", "b", "c"],"aq":["a", "b", "c"],"ar":["a", "b", "c"],"as":["a", "b", "c"],"at":["a", "b", "c"],"au":["a", "b", "c"],"av":["a", "b", "c"],"aw":["a", "b", "c"],"ax":["a", "b", "c"],"ay":["a", "b", "c"],"az":["a", "b", "c"],"ba":["a", "b", "c"],"bb":["a", "b", "c"],"bc":["a", "b", "c"],"bd":["a", "b", "c"],"be":["a", "b", "c"],"bf":["a", "b", "c"],"bg":["a", "b", "c"],"bh":["a", "b", "c"],"bi":["a", "b", "c"],"bj":["a", "b", "c"],"bk":["a", "b", "c"],"bl":["a", "b", "c"],"bm":["a", "b", "c"],"bn":["a", "b", "c"],"bo":["a", "b", "c"],"bp":["a", "b", "c"],"bq":["a", "b", "c"],"br":["a", "b", "c"],"bs":["a", "b", "c"],"bt":["a", "b", "c"],"bu":["a", "b", "c"],"bv":["a", "b", "c"],"bw":["a", "b", "c"],"bx":["a", "b", "c"],"by":["a", "b", "c"],"bz":["a", "b", "c"],"ca":["a", "b", "c"],"cb":["a", "b", "c"],"cc":["a", "b", "c"],"cd":["a", "b", "c"],"ce":["a", "b", "c"],"cf":["a", "b", "c"],"cg":["a", "b", "c"],"ch":["a", "b", "c"],"ci":["a", "b", "c"],"cj":["a", "b", "c"],"ck":["a", "b", "c"],"cl":["a", "b", "c"],"cm":["a", "b", "c"],"cn":["a", "b", "c"],"co":["a", "b", "c"],"cp":["a", "b", "c"],"cq":["a", "b", "c"],"cr":["a", "b", "c"],"cs":["a", "b", "c"],"ct":["a", "b", "c"],"cu":["a", "b", "c"],"cv":["a", "b", "c"],"cw":["a", "b", "c"],"cx":["a", "b", "c"],"cy":["a", "b", "c"],"cz":["a", "b", "c"],"da":["a", "b", "c"],"db":["a", "b", "c"],"dc":["a", "b", "c"],"dd":["a", "b", "c"],"de":["a", "b", "c"],"df":["a", "b", "c"],"dg":["a", "b", "c"],"dh":["a", "b", "c"],"di":["a", "b", "c"],"dj":["a", "b", "c"],"dk":["a", "b", "c"],"dl":["a", "b", "c"],"dm":["a", "b", "c"],"dn":["a", "b", "c"],"do":["a", "b", "c"],"dp":["a", "b", "c"],"dq":["a", "b", "c"],"dr":["a", "b", "c"],"ds":["a", "b", "c"],"dt":["a", "b", "c"],"du":["a", "b", "c"],"dv":["a", "b", "c"],"dw":["a", "b", "c"],"dx":["a", "b", "c"],"dy":["a", "b", "c"],"dz":["a", "b", "c"],"ea":["a", "b", "c"],"eb":["a", "b", "c"],"ec":["a", "b", "c"],"ed":["a", "b", "c"],"ee":["a", "b", "c"],"ef":["a", "b", "c"],"eg":["a", "b", "c"],"eh":["a", "b", "c"],"ei":["a", "b", "c"],"ej":["a", "b", "c"],"ek":["a", "b", "c"],"el":["a", "b", "c"],"em":["a", "b", "c"],"en":["a", "b", "c"],"eo":["a", "b", "c"],"ep":["a", "b", "c"],"eq":["a", "b", "c"],"er":["a", "b", "c"],"es":["a", "b", "c"],"et":["a", "b", "c"],"eu":["a", "b", "c"],"ev":["a", "b", "c"],"ew":["a", "b", "c"],"ex":["a", "b", "c"],"ey":["a", "b", "c"],"ez":["a", "b", "c"]
+        "𒀰":["c"],
+        "BBB":["d"],
+        "c":["e"],
+        "d":["𒀰"],
+        "e":["BBB"],
+        # "f":[],
+        # "g":[],
+        # "h":[],
+        # "i":[],
+        # "j":[],
+        # "k":[],
+        # "l":[],
+        # "m":[],
+        # "n":[],
+        # "o":[],
+        # "p":[],
+        # "q":[],
+        # "r":[],
+        # "s":[],
+        # "t":[],
+        # "u":[],
+        # "v":[],
+        # "w":[],
+        # "x":[],
+        # "y":[],
+        # "z":[],
+        # "aa":[],
+        # "ab":[],
+        # "ac":[],
+        # "ad":[],
+        # "ae":[],
+        # "af":[],
+        # "ag":[],
+        # "ah":[],
+        # "ai":[],
+        # "aj":[],
+        # "ak":[],
+        # "al":[],
+        # "am":[],
+        # "an":[],
+        # "ao":[],
+        # "ap":[],
+        # "aq":[],
+        # "ar":[],
+        # "as":[],
+        # "at":[],
+        # "au":[],
+        # "av":[],
+        # "aw":[],
+        # "ax":[],
+        # "ay":[],
+        # "az":[],
+        # "ba":[],
+        # "bb":[],
+        # "bc":[],
+        # "bd":[],
+        # "be":[],
+        # "bf":[],
+        # "bg":[],
+        # "bh":[],
+        # "bi":[],
+        # "bj":[],
+        # "bk":[],
+        # "bl":[],
+        # "bm":[],
+        # "bn":[],
+        # "bo":[],
+        # "bp":[],
+        # "bq":[],
+        # "br":[],
+        # "bs":[],
+        # "bt":[],
+        # "bu":[],
+        # "bv":[],
+        # "bw":[],
+        # "bx":[],
+        # "by":[],
+        # "bz":[],
+        # "aa":[],
+        # "ab":[],
+        # "ac":[],
+        # "ad":[],
+        # "ae":[],
+        # "af":[],
+        # "ag":[],
+        # "ah":[],
+        # "ai":[],
+        # "aj":[],
+        # "ak":[],
+        # "al":[],
+        # "am":[],
+        # "an":[],
+        # "ao":[],
+        # "ap":[],
+        # "aq":[],
+        # "ar":[],
+        # "as":[],
+        # "at":[],
+        # "au":[],
+        # "av":[],
+        # "aw":[],
+        # "ax":[],
+        # "ay":[],
+        # "az":[],
+        # "ba":[],
+        # "bb":[],
+        # "bc":[],
+        # "bd":[],
+        # "be":[],
+        # "bf":[],
+        # "bg":[],
+        # "bh":[],
+        # "bi":[],
+        # "bj":[],
+        # "bk":[],
+        # "bl":[],
+        # "bm":[],
+        # "bn":[],
+        # "bo":[],
+        # "bp":[],
+        # "bq":[],
+        # "br":[],
+        # "bs":[],
+        # "bt":[],
+        # "bu":[],
+        # "bv":[],
+        # "bw":[],
+        # "bx":[],
+        # "by":[],
+        # "bz":[],
+        # "ca":[],
+        # "cb":[],
+        # "cc":[],
+        # "cd":[],
+        # "ce":[],
+        # "cf":[],
+        # "cg":[],
+        # "ch":[],
+        # "ci":[],
+        # "cj":[],
+        # "ck":[],
+        # "cl":[],
+        # "cm":[],
+        # "cn":[],
+        # "co":[],
+        # "cp":[],
+        # "cq":[],
+        # "cr":[],
+        # "cs":[],
+        # "ct":[],
+        # "cu":[],
+        # "cv":[],
+        # "cw":[],
+        # "cx":[],
+        # "cy":[],
+        # "cz":[],
+        # "da":[],
+        # "db":[],
+        # "dc":[],
+        # "dd":[],
+        # "de":[],
+        # "df":[],
+        # "dg":[],
+        # "dh":[],
+        # "di":[],
+        # "dj":[],
+        # "dk":[],
+        # "dl":[],
+        # "dm":[],
+        # "dn":[],
+        # "do":[],
+        # "dp":[],
+        # "dq":[],
+        # "dr":[],
+        # "ds":[],
+        # "dt":[],
+        # "du":[],
+        # "dv":[],
+        # "dw":[],
+        # "dx":[],
+        # "dy":[],
+        # "dz":[],
+        # "ea":[],
+        # "eb":[],
+        # "ec":[],
+        # "ed":[],
+        # "ee":[],
+        # "ef":[],
+        # "eg":[],
+        # "eh":[],
+        # "ei":[],
+        # "ej":[],
+        # "ek":[],
+        # "el":[],
+        # "em":[],
+        # "en":[],
+        # "eo":[],
+        # "ep":[],
+        # "eq":[],
+        # "er":[],
+        # "es":[],
+        # "et":[],
+        # "eu":[],
+        # "ev":[],
+        # "ew":[],
+        # "ex":[],
+        # "ey":[],
+        # "ez":[]
     })
+        
+    cairosvg.svg2png(url="./gengraph.svg", write_to="./graph.png", output_width=centerxy*2, output_height=centerxy*2)
+    cairosvg.svg2svg(url="./gengraph.svg", write_to="./graph.svg", output_width=centerxy*2, output_height=centerxy*2) #

@@ -1,0 +1,5 @@
+# apt install cairo
+
+svgwrite
+cairosvg
+tinycss2
