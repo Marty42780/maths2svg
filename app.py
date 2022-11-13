@@ -1,15 +1,17 @@
-from flask import Flask, send_file, url_for
-# from Maths2SVG import main
+from flask import Flask, send_file, request
+from Maths2SVG.main import circularGraph
+import math
 
 app = Flask(__name__)
-# main.circularGraph()
+
 @app.route("/")
 def index():
     return send_file('web/index.html')
 
 @app.route("/image")
 def return_image():
-    return send_file('doc/graph.png')
+    circularGraph()
+    return send_file('doc/graph.svg')
 
 @app.route("/style.css")
 def return_style():
@@ -18,3 +20,6 @@ def return_style():
 @app.route("/script.js")
 def return_js():
     return send_file('web/script.js')
+
+if __name__ == '__main__':
+    app.run(debug=True, threaded=False)

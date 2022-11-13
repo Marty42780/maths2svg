@@ -22,6 +22,27 @@ form fieldset {
   width: -webkit-fill-available;
 }
 
+form #points-information {
+  display: grid;
+  grid-template-columns: 10% 85%;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+}
+form #points-information div {
+  display: flex;
+  /* width: -webkit-fill-available; */
+}
+form #points-information input {
+  margin-bottom: 5px;
+
+}
+
+form .label-capitalize {
+  display: none; 
+}
+form input#label[type=checkbox]:checked + label + div.label-capitalize {
+  display: flex;
+}
 form option:hover {
   background-color: rgb(0, 0, 0);
 }
@@ -33,7 +54,7 @@ form .submit-button {
   cursor: pointer;
 }
 #result {
-  /* display: none; */
+  display: none;
   flex-direction: column;
   width: -webkit-fill-available;
   max-width: 500px;
