@@ -5,37 +5,116 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
     <title>Document</title>
   </head>
   <body>
     <h1>Math2SVG</h1>
     <form action="">
       <fieldset>
-        <legend>Graph Settings</legend>
-        <label for="number-of-points">Number of points: </label>
-        <input type="number" id="tentacles" name="tentacles" min="2" max="20" />
-        <div>
-          <input type="checkbox" id="scales" name="scales" checked />
-          <label for="scales">Labels</label>
-        </div>
-        <div>
-          <input type="checkbox" id="horns" name="horns" />
-          <label for="horns">Horns</label>
+        <legend>Points</legend>
+        <div class="form-part">
+          <label for="number-of-points">
+            Number of points (between 2 and 20):
+          </label>
+          <input
+            type="number"
+            id="tentacles"
+            name="nb_of_point"
+            min="2"
+            max="20"
+          />
         </div>
       </fieldset>
       <fieldset>
         <legend>Image Settings</legend>
-        <label for="image-type">Image Type:</label>
-        <div>
-          <input type="radio" name="image-type" value="svg" />
-          <label for="image-type-svg">SVG</label>
+        <div class="form-part">
+          <input type="checkbox" id="label" class="pointer" checked />
+          <label for="label">Show point names</label>
         </div>
-        <div>
-          <input type="radio" name="image-type" value="png" />
-          <label for="image-type-png">PNG</label>
+        <div class="form-part">
+          <label for="mainColorSelector">Main Color: </label>
+          <select id="mainColorSelector" class="pointer">
+            <option value="white">White</option>
+            <option value="black">Black</option>
+          </select>
+        </div>
+        <div class="form-part">
+          <label for="backgroundColorSelector">Background Color: </label>
+          <select id="backgroundColorSelector" class="pointer">
+            <option value="transparent">Transparent</option>
+            <option value="white">White</option>
+            <option value="black">Black</option>
+          </select>
+        </div>
+        <div class="form-part">
+          <label for="image-type">Image Type:</label>
+          <div>
+            <input
+              type="radio"
+              name="image-type"
+              class="pointer"
+              value="svg"
+              checked
+            />
+            <label for="image-type-svg">SVG</label>
+          </div>
+          <div>
+            <input type="radio" name="image-type" class="pointer" value="png" />
+            <label for="image-type-png">PNG</label>
+          </div>
+          <div>
+            <input type="radio" name="image-type" class="pointer" value="ps" />
+            <label for="image-type-ps">PS</label>
+          </div>
+          <div>
+            <input type="radio" name="image-type" class="pointer" value="pdf" />
+            <label for="image-type-pdf">PDF</label>
+          </div>
         </div>
       </fieldset>
-      <input type="submit" value="Générer" class="submit-button" />
+      <input
+        type="button"
+        value="Générer"
+        onclick="generate()"
+        class="submit-button pointer"
+      />
     </form>
+    <div id="result">
+      <fieldset>
+        <legend>Result</legend>
+        <img id="generated-image" />
+        <a href="" target="_blank"><button class="pointer">Download</button></a>
+        <a href="" target="_blank"><button class="pointer">Show</button></a>
+        <!-- TODO: Import href from Generate() -->
+        <div class="embed">
+          <p>Embed</p>
+          <div>
+            <p>Markdown</p>
+            <div class="code">
+              <div class="md-code">
+                <code>![]</code><code>(</code><code>https://lol.bat</code
+                ><code>)</code>
+              </div>
+              <button>Copier</button>
+            </div>
+          </div>
+          <div>
+            <p>HTML</p>
+            <div class="code">
+              <div class="html-code">
+                <code>&lt;</code><code>img</code> <code>src</code><code>=</code
+                ><code>"</code><code>https://lol.bat</code><code>"</code
+                ><code>&gt;</code>
+              </div>
+              <button>Copier</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
   </body>
 </html>
+
+
+<img src="https://lol.bat"/>
