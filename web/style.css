@@ -27,6 +27,7 @@ form #points-information {
   grid-template-columns: 10% 85%;
   justify-content: space-between;
   width: -webkit-fill-available;
+  gap: 5px;
 }
 form #points-information div {
   display: flex;
