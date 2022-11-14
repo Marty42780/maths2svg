@@ -14,9 +14,7 @@
       <fieldset>
         <legend>Points</legend>
         <div class="form-part">
-          <label for="nb_of_point">
-            Number of points (at least 2):
-          </label>
+          <label for="nb_of_point"> Number of points (at least 2): </label>
           <input
             type="number"
             id="nb_of_point"
@@ -28,14 +26,27 @@
         </div>
         <div id="points-information">
           <label for="name-of-point">Name</label>
-          <label for="points-they-are-linked-to">Points they are linked to</label>
-          <input type="text" name="name-of-point" id="name-of-point" placeholder="A"/>
-          <input type="text" name="points-they-are-linked-to" id="points-they-are-linked-to" placeholder="A, B, C, ..." />
+          <label for="points-they-are-linked-to"
+            >Points they are linked to</label
+          >
+          <input
+            type="text"
+            name="name-of-point"
+            id="name-of-point"
+            placeholder="A"
+          />
+          <input
+            type="text"
+            name="points-they-are-linked-to"
+            id="points-they-are-linked-to"
+            placeholder="A, B, C, ..."
+          />
         </div>
       </fieldset>
       <fieldset>
         <legend>Image Settings</legend>
-        <div class="form-part"> <!-- Image Type-->
+        <div class="form-part">
+          <!-- Image Type-->
           <label for="image-type">Image Type:</label>
           <div>
             <input
@@ -60,7 +71,8 @@
             <label for="image-type-pdf">PDF</label>
           </div>
         </div>
-        <div class="form-part"> <!-- Label and Label-capitalized -->
+        <div class="form-part">
+          <!-- Label and Label-capitalized -->
           <input type="checkbox" id="label" class="pointer" checked />
           <label for="label">Show point names</label>
           <div class="form-part label-capitalize">
@@ -68,14 +80,16 @@
             <label for="label-capitalize">Catitalize points names</label>
           </div>
         </div>
-        <div class="form-part"> <!-- Main Color -->
+        <div class="form-part">
+          <!-- Main Color -->
           <label for="mainColorSelector">Main Color: </label>
           <select id="mainColorSelector" class="pointer">
             <option value="white">White</option>
             <option value="black">Black</option>
           </select>
         </div>
-        <div class="form-part"> <!-- Background Color -->
+        <div class="form-part">
+          <!-- Background Color -->
           <label for="backgroundColorSelector">Background Color: </label>
           <select id="backgroundColorSelector" class="pointer">
             <option value="transparent">Transparent</option>
@@ -95,8 +109,8 @@
       <fieldset>
         <legend>Result</legend>
         <img id="generated-image" />
-        <a href="" target="_blank"><button class="pointer">Download</button></a>
-        <a href="" target="_blank"><button class="pointer">Show</button></a>
+        <a href="" id="result-button" target="_blank" download=""><button class="pointer">Download</button></a>
+        <a href="" id="result-button" target="_blank"><button class="pointer">Show</button></a>
         <!-- TODO: Import href from Generate() -->
         <div class="embed">
           <p>Embed</p>

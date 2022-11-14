@@ -22,4 +22,4 @@ def return_js():
     return send_file('web/script.js')
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=False)
+    app.run(debug=F, threaded=False)

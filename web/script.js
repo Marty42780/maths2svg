@@ -21,16 +21,16 @@ function generate() {
         graphInputs += "\"" + points_informations[i].value + "\":[" + string_the_points_they_are_linked_to + "],";
     };
     // Part to get label
-    if (document.querySelector("#label").checked == true) { 
-        label = "True"; 
-    } else { 
-        label = "False"; 
+    if (document.querySelector("#label").checked == true) {
+        label = "True";
+    } else {
+        label = "False";
     };
     // Part to get labelCapitalized
-    if (document.querySelector("#label-capitalize").checked == true) { 
-        labelCapitalize = "True"; 
-    } else { 
-        labelCapitalize = "False"; 
+    if (document.querySelector("#label-capitalize").checked == true) {
+        labelCapitalize = "True";
+    } else {
+        labelCapitalize = "False";
     };
     // Part to get mainColor
     mainColor = document.querySelector("#mainColorSelector").value
@@ -40,10 +40,9 @@ function generate() {
 
     // Part to generate url
     url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs;
-
     document.querySelector("#generated-image").src = url;
+    document.querySelectorAll("#result-button").forEach(element => { element.setAttribute("href", url); });
     document.getElementById("result").style.display = "flex";
-    // TODO: Set href of show / download button here
 };
 
 

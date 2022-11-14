@@ -100,19 +100,18 @@ def circularGraph(
                         strokeColor = mainColor
                     angle = math.atan2((graphInputs[arrow][0][1]),(graphInputs[arrow][0][0]))
                     print(angle, point[1], arrow)
-                    borderRadius = CircularGraphRadius+CircularGraphPointRadius
                     temp_points = (
-                        str((borderRadius+CircularGraphPointRadius*3/5)*math.cos(angle)), 
-                        str((borderRadius+CircularGraphPointRadius*3/5)*math.sin(angle)), 
-                        str((borderRadius+CircularGraphPointRadius*12/5)*math.cos(angle)), 
-                        str(CircularGraphPointRadius*14/5), 
-                        str(CircularGraphPointRadius*12/5), 
-                        str(CircularGraphPointRadius*14/5), 
-                        str(CircularGraphPointRadius*3/5), 
-                        str(0)
+                        str(round((centerxy)*math.cos(angle)+CircularGraphPointRadius*3/5)), 
+                        str(round((centerxy)*math.sin(angle))), 
+                        str(round((centerxy)*math.cos(angle)+CircularGraphPointRadius*12/5)), 
+                        str(round((centerxy)*math.sin(angle)+CircularGraphPointRadius*14/5)), 
+                        str(round((centerxy)*math.cos(angle)+CircularGraphPointRadius*12/5)), 
+                        str(round((centerxy)*math.sin(angle)+CircularGraphPointRadius*14/5)), 
+                        str(round((centerxy)*math.cos(angle)+CircularGraphPointRadius*3/5)), 
+                        str(round((centerxy)*math.sin(angle)))
                     )
-                    drawn_arrow = dwg.path(d="M-"+str(CircularGraphPointRadius*3/5)+","+str(0)+" C-"+str(CircularGraphPointRadius*12/5)+",-"+str(CircularGraphPointRadius*14/5)+" "+str(CircularGraphPointRadius*12/5)+",-"+str(CircularGraphPointRadius*14/5)+" "+str(CircularGraphPointRadius*3/5)+","+str(0), stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10))
-                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity)
+                    drawn_arrow = dwg.path(d="M"+temp_points[0]+","+temp_points[1]+" C"+temp_points[2]+","+temp_points[3]+" "+temp_points[4]+","+temp_points[5]+" "+temp_points[6]+","+temp_points[7], stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10))
+                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity).rotate(angle)
                     dwg.add(drawn_arrow)
 
     for point in enumerate(graphInputs.keys()):
@@ -142,16 +141,16 @@ def circularGraph(
 
     if 'svg' in fileType:
         print("Converting to SVG…")
-        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize+2*CircularGraphPointRadius, output_height=outputSize+2*CircularGraphPointRadius)
     if 'png' in fileType:
         print("Converting to PNG…")
-        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize+2*CircularGraphPointRadius, output_height=outputSize+2*CircularGraphPointRadius)
     if 'ps' in fileType:
         print("Converting to PS…")
-        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize+2*CircularGraphPointRadius, output_height=outputSize+2*CircularGraphPointRadius)
     if 'pdf' in fileType: 
         print("Converting to PDF…")
-        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize+2*CircularGraphPointRadius, output_height=outputSize+2*CircularGraphPointRadius)
     
     print("Circular graph : operation terminated.")
     return True
@@ -162,32 +161,32 @@ if __name__== "__main__":
     circularGraph(
         fileType='png', # Or a list
         graphInputs={
-        "aa":["aa"],
-        "ab":["aa"],
-        "ac":["aa"],
-        "ad":["aa"],
-        "ae":["aa"],
-        "af":["aa"],
-        "ag":["aa"],
-        "ah":["aa"],
-        "ai":["aa"],
-        "aj":["aa"],
-        "ak":["aa"],
-        "al":["aa"],
-        "am":["aa"],
-        "an":["aa"],
-        "ao":["aa"],
-        "ap":["aa"],
-        "aq":["aa"],
-        "ar":["aa"],
-        "as":["aa"],
-        "at":["aa"],
-        "au":["aa"],
-        "av":["aa"],
-        "aw":["aa"],
-        "ax":["aa"],
-        "ay":["aa"],
-        "az":["aa"],
+        "aa":["ad"],
+        "ab":["ad"],
+        "ac":["ad"],
+        "ad":["ad"],
+        "ae":["ad"],
+        "af":["ad"],
+        "ag":["ad"],
+        "ah":["ad"],
+        "ai":["ad"],
+        "aj":["ad"],
+        "ak":["ad"],
+        "al":["ad"],
+        "am":["ad"],
+        "an":["ad"],
+        "ao":["ad"],
+        "ap":["ad"],
+        "aq":["ad"],
+        "ar":["ad"],
+        "as":["ad"],
+        "at":["ad"],
+        "au":["ad"],
+        "av":["ad"],
+        "aw":["ad"],
+        "ax":["ad"],
+        "ay":["ad"],
+        "az":["ad"],
         # "ba":["aa"],
         # "bb":["aa"],
         # "bc":["aa"],

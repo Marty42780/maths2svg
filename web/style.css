@@ -15,7 +15,7 @@ form {
   max-width: 500px;
 }
 form div.form-part {
-  margin: 6px 0 14px 0;
+  margin: 6px 0 1.5em 0;
 }
 form fieldset {
   margin-bottom: 1em;
@@ -24,10 +24,10 @@ form fieldset {
 
 form #points-information {
   display: grid;
-  grid-template-columns: 10% 85%;
+  grid-template-columns: 1fr 5fr;
   justify-content: space-between;
-  width: -webkit-fill-available;
   gap: 5px;
+  column-gap: 40px
 }
 form #points-information div {
   display: flex;
@@ -35,7 +35,7 @@ form #points-information div {
 }
 form #points-information input {
   margin-bottom: 5px;
-
+  min-width: 0;
 }
 
 form .label-capitalize {
