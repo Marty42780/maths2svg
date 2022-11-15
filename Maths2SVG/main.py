@@ -33,7 +33,7 @@ def circularGraph(
     \n\t - PS
     \n\t - PDF
     \n - `oriented` : generated graph will be oriented (with arrows instead of just lines) when `True`
-    \n - `allowLoops` : Allow arrows to point at their origin point
+    \n - `allowLoops` : Allow arrows to point at their origin point [enlarges output size]
     \n - `label` : Show point names
     \n - `labelCapitalize` : Make point names uppercase
     \n - `outputSize` : Output file width=height (pixels)
@@ -49,9 +49,9 @@ def circularGraph(
     # Constants
     numberofpoints = len(graphInputs)
     insideAngle = 2*math.pi/numberofpoints
-    centerxy = outputSize/2 # CircularGraphRadius+CircularGraphPointRadius+15/numberofpoints+0.5 # 
+    centerxy = outputSize/2 # CircularGraphRadius+CircularGraphPointRadius+15/numberofpoints+0.5
     CircularGraphPointRadius = math.pi*centerxy/numberofpoints/(2+10/numberofpoints**2) # 140/numberofpoints+20 # x = 
-    CircularGraphRadius = centerxy - CircularGraphPointRadius-CircularGraphPointRadius/10 # numberofpoints*10+200 # 
+    CircularGraphRadius = centerxy - 11*CircularGraphPointRadius/10 # numberofpoints*10+200 # 
 
     dwg = svgwrite.Drawing('./Maths2SVG/gengraph.svg', profile='tiny')
 
@@ -60,10 +60,12 @@ def circularGraph(
         for point in enumerate(graphInputs.keys()):
             graphInputs[point[1]].insert(0, ((math.cos(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius), (math.sin(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius)))
             graphInputs[point[1]].insert(1, (randomColors[random.randint(0, 146)]))
+            print(point[1], graphInputs[point[1]][0])
         slicefrom2 = 1
     else:
         for point in enumerate(graphInputs.keys()):
             graphInputs[point[1]].insert(0, ((math.cos(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius), (math.sin(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius)))
+            print(point[1], graphInputs[point[1]][0])
         slicefrom2 = 0
 
     if bgColor != 'transparent':
@@ -100,19 +102,20 @@ def circularGraph(
                         strokeColor = mainColor
                     angle = math.atan2((graphInputs[arrow][0][1]),(graphInputs[arrow][0][0]))
                     print(angle, point[1], arrow)
-                    borderRadius = CircularGraphRadius+CircularGraphPointRadius
+                    pointcoor = graphInputs[point[1]][0]
                     temp_points = (
-                        str((borderRadius+CircularGraphPointRadius*3/5)*math.cos(angle)), 
-                        str((borderRadius+CircularGraphPointRadius*3/5)*math.sin(angle)), 
-                        str((borderRadius+CircularGraphPointRadius*12/5)*math.cos(angle)), 
-                        str(CircularGraphPointRadius*14/5), 
-                        str(CircularGraphPointRadius*12/5), 
-                        str(CircularGraphPointRadius*14/5), 
-                        str(CircularGraphPointRadius*3/5), 
-                        str(0)
+                        str(pointcoor[0]+CircularGraphPointRadius*math.cos(angle-math.pi/6)), 
+                        str(pointcoor[1]+CircularGraphPointRadius*math.sin(angle-math.pi/6)), 
+                        str(pointcoor[0]+3*CircularGraphPointRadius*math.cos(angle-math.pi/6)), 
+                        str(pointcoor[1]+3*CircularGraphPointRadius*math.sin(angle-math.pi/6)), 
+                        str(pointcoor[0]+3*CircularGraphPointRadius*math.cos(angle+math.pi/6)), 
+                        str(pointcoor[1]+3*CircularGraphPointRadius*math.sin(angle+math.pi/6)), 
+                        str(pointcoor[0]+CircularGraphPointRadius*math.cos(angle+math.pi/6)), 
+                        str(pointcoor[1]+CircularGraphPointRadius*math.sin(angle+math.pi/6))
                     )
-                    drawn_arrow = dwg.path(d="M-"+str(CircularGraphPointRadius*3/5)+","+str(0)+" C-"+str(CircularGraphPointRadius*12/5)+",-"+str(CircularGraphPointRadius*14/5)+" "+str(CircularGraphPointRadius*12/5)+",-"+str(CircularGraphPointRadius*14/5)+" "+str(CircularGraphPointRadius*3/5)+","+str(0), stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10))
-                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity)
+                    print(temp_points, "\n", graphInputs[point[1]][0])
+                    drawn_arrow = dwg.path(d="M"+temp_points[0]+","+temp_points[1]+" C"+temp_points[2]+","+temp_points[3]+" "+temp_points[4]+","+temp_points[5]+" "+temp_points[6]+","+temp_points[7], stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10)) # , transform = 'rotate('+str(angle)+')')
+                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity).rotate(angle)
                     dwg.add(drawn_arrow)
 
     for point in enumerate(graphInputs.keys()):
@@ -140,18 +143,22 @@ def circularGraph(
 
     # Resize and scale svg
 
+    if allowLoops:
+        addLoopRad=CircularGraphPointRadius*3
+    else:
+        addLoopRad=0
     if 'svg' in fileType:
         print("Converting to SVG…")
-        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'png' in fileType:
         print("Converting to PNG…")
-        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'ps' in fileType:
         print("Converting to PS…")
-        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'pdf' in fileType: 
         print("Converting to PDF…")
-        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize, output_height=outputSize)
+        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     
     print("Circular graph : operation terminated.")
     return True
@@ -162,32 +169,32 @@ if __name__== "__main__":
     circularGraph(
         fileType='png', # Or a list
         graphInputs={
-        "aa":["aa"],
-        "ab":["aa"],
-        "ac":["aa"],
-        "ad":["aa"],
-        "ae":["aa"],
-        "af":["aa"],
-        "ag":["aa"],
-        "ah":["aa"],
-        "ai":["aa"],
-        "aj":["aa"],
-        "ak":["aa"],
-        "al":["aa"],
-        "am":["aa"],
-        "an":["aa"],
-        "ao":["aa"],
-        "ap":["aa"],
-        "aq":["aa"],
-        "ar":["aa"],
-        "as":["aa"],
-        "at":["aa"],
-        "au":["aa"],
-        "av":["aa"],
-        "aw":["aa"],
-        "ax":["aa"],
-        "ay":["aa"],
-        "az":["aa"],
+        "aa":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ab":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ac":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ad":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ae":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "af":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ag":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ah":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ai":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "aj":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ak":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "al":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "am":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "an":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ao":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ap":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "aq":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ar":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "as":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "at":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "au":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "av":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "aw":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ax":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "ay":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "az":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
         # "ba":["aa"],
         # "bb":["aa"],
         # "bc":["aa"],
