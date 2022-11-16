@@ -3,4 +3,4 @@
 
 - Circular graph
 
-![Circular graph example](../doc/graph.png)
+![Circular graph example](../doc/graph.svg)

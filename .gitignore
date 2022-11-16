@@ -216,6 +216,12 @@ pip-selfcheck.json
 
 *.png
 *.svg
+*.pdf
+*.ps
+
 !doc/*.png
 !doc/*.svg
+!doc/*.pdf
+!doc/*.ps
 
+maincopy.py
