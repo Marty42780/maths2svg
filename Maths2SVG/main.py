@@ -13,10 +13,10 @@ def circularGraph(
     fileType: str='svg',
     graphInputs: dict={"Why": ["not"], "not": ["try"], "try": []},
     oriented: bool=True,
-    allowLoops: bool=True,
-    label: bool=True,
+    allowLoops: bool=False,
+    label: bool=False,
     labelCapitalize: bool=True,
-    outputSize: int=1000,
+    outputSize: int=2000,
     mainColor: str='random',
     bgColor: str='transparent',
     pointColor: str='transparent',
@@ -101,7 +101,6 @@ def circularGraph(
                     else:
                         strokeColor = mainColor
                     angle = math.atan2((graphInputs[arrow][0][1]),(graphInputs[arrow][0][0]))
-                    print(angle, point[1], arrow)
                     pointcoor = graphInputs[point[1]][0]
                     temp_points = (
                         str(pointcoor[0]+CircularGraphPointRadius*math.cos(angle-math.pi/6)), 
@@ -149,16 +148,16 @@ def circularGraph(
         addLoopRad=0
     if 'svg' in fileType:
         print("Converting to SVG…")
-        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'png' in fileType:
         print("Converting to PNG…")
-        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'ps' in fileType:
         print("Converting to PS…")
-        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'pdf' in fileType: 
         print("Converting to PDF…")
-        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     
     print("Circular graph : operation terminated.")
     return True
@@ -167,34 +166,34 @@ def circularGraph(
 
 if __name__== "__main__":
     circularGraph(
-        fileType='png', # Or a list
+        fileType='psvgpdfpng', # Or a list
         graphInputs={
-        "aa":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ab":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ac":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ad":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ae":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "af":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ag":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ah":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ai":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "aj":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ak":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "al":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "am":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "an":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ao":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ap":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "aq":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ar":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "as":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "at":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "au":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "av":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "aw":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ax":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "ay":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
-        "az":["aa", "ad", "ag", "ah", "ak", "an", "aq", "at", "au", "ax"],
+        "aa":["aa"],
+        "ab":["aa"],
+        "ac":["aa"],
+        "ad":["aa"],
+        "ae":["aa"],
+        "af":["aa"],
+        "ag":["aa"],
+        "ah":["aa"],
+        "ai":["aa"],
+        "aj":["aa"],
+        "ak":["aa"],
+        "al":["aa"],
+        "am":["aa"],
+        "an":["aa"],
+        "ao":["aa"],
+        "ap":["aa"],
+        "aq":["aa"],
+        "ar":["aa"],
+        "as":["aa"],
+        "at":["aa"],
+        "au":["aa"],
+        "av":["aa"],
+        "aw":["aa"],
+        "ax":["aa"],
+        "ay":["aa"],
+        "az":["aa"],
         # "ba":["aa"],
         # "bb":["aa"],
         # "bc":["aa"],

@@ -36,7 +36,11 @@ gunicorn app:app -w 2 --threads 3
 ```
 - Go to [http://127.0.0.1:5000](http://127.0.0.1:8000)
 
+# Credits
 
+Founders of this project : [Marty42780](https://github.com/Marty42780), [CameliaMallus](https://github.com/CameliaMallus)
+
+###### -
 -----------------
 
 2022

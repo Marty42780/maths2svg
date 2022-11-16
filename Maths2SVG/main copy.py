@@ -13,10 +13,10 @@ def circularGraph(
     fileType: str='svg',
     graphInputs: dict={"Why": ["not"], "not": ["try"], "try": []},
     oriented: bool=True,
-    allowLoops: bool=True,
-    label: bool=True,
+    allowLoops: bool=False,
+    label: bool=False,
     labelCapitalize: bool=True,
-    outputSize: int=1000,
+    outputSize: int=2000,
     mainColor: str='random',
     bgColor: str='transparent',
     pointColor: str='transparent',
@@ -33,7 +33,7 @@ def circularGraph(
     \n\t - PS
     \n\t - PDF
     \n - `oriented` : generated graph will be oriented (with arrows instead of just lines) when `True`
-    \n - `allowLoops` : Allow arrows to point at their origin point
+    \n - `allowLoops` : Allow arrows to point at their origin point [enlarges output size]
     \n - `label` : Show point names
     \n - `labelCapitalize` : Make point names uppercase
     \n - `outputSize` : Output file width=height (pixels)
@@ -101,7 +101,6 @@ def circularGraph(
                     else:
                         strokeColor = mainColor
                     angle = math.atan2((graphInputs[arrow][0][1]),(graphInputs[arrow][0][0]))
-                    print(angle, point[1], arrow)
                     pointcoor = graphInputs[point[1]][0]
                     temp_points = (
                         str(pointcoor[0]+CircularGraphPointRadius*math.cos(angle-math.pi/6)), 
@@ -144,21 +143,21 @@ def circularGraph(
     # Resize and scale svg
 
     if allowLoops:
-        addLoopRad=CircularGraphPointRadius*2
+        addLoopRad=CircularGraphPointRadius*3
     else:
         addLoopRad=0
     if 'svg' in fileType:
         print("Converting to SVG…")
-        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2svg(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'png' in fileType:
         print("Converting to PNG…")
-        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2png(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'ps' in fileType:
         print("Converting to PS…")
-        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2ps(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     if 'pdf' in fileType: 
         print("Converting to PDF…")
-        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./doc/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
+        cairosvg.svg2pdf(url="./Maths2SVG/gengraph.svg", write_to="./Maths2SVG/results/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
     
     print("Circular graph : operation terminated.")
     return True
@@ -167,34 +166,34 @@ def circularGraph(
 
 if __name__== "__main__":
     circularGraph(
-        fileType='png', # Or a list
+        fileType='psvgpdfpng', # Or a list
         graphInputs={
-        "aa":["as", "ac"],
-        "ab":["as", "ac"],
-        "ac":["as", "ac"],
-        # "ad":["as", "ab"],
-        # "ae":["as", "ab"],
-        # "af":["as", "ab"],
-        # "ag":["as", "ab"],
-        # "ah":["as", "ab"],
-        # "ai":["as", "ab"],
-        # "aj":["as", "ab"],
-        # "ak":["as", "ab"],
-        # "al":["as", "ab"],
-        # "am":["as", "ab"],
-        # "an":["as", "ab"],
-        # "ao":["as", "ab"],
-        # "ap":["as", "ab"],
-        # "aq":["as", "ab"],
-        # "ar":["as", "ab"],
-        # "as":["as", "ab"],
-        # "at":["as", "ab"],
-        # "au":["as", "ab"],
-        # "av":["as", "ab"],
-        # "aw":["as", "ab"],
-        # "ax":["as", "ab"],
-        # "ay":["ad"],
-        # "az":["ad"],
+        "aa":["aa"],
+        "ab":["aa"],
+        "ac":["aa"],
+        "ad":["aa"],
+        "ae":["aa"],
+        "af":["aa"],
+        "ag":["aa"],
+        "ah":["aa"],
+        "ai":["aa"],
+        "aj":["aa"],
+        "ak":["aa"],
+        "al":["aa"],
+        "am":["aa"],
+        "an":["aa"],
+        "ao":["aa"],
+        "ap":["aa"],
+        "aq":["aa"],
+        "ar":["aa"],
+        "as":["aa"],
+        "at":["aa"],
+        "au":["aa"],
+        "av":["aa"],
+        "aw":["aa"],
+        "ax":["aa"],
+        "ay":["aa"],
+        "az":["aa"],
         # "ba":["aa"],
         # "bb":["aa"],
         # "bc":["aa"],
