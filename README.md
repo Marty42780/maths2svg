@@ -13,6 +13,10 @@
 ### Installing Python venv
 
 - Make sure `pip` is installed and up-to-date
+- Install [cairo](https://www.cairographics.org/):
+```bash
+apt install -y libcairo2-dev
+```
 - Clone the repo and execute: 
 ```bash
 python3 -m venv venv
