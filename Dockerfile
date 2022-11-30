@@ -1,4 +1,4 @@
-FROM python:3.10.6-alpine3.16
+FROM ubuntu
 
 # copy project
 COPY . /usr/src/app/
@@ -7,7 +7,7 @@ COPY . /usr/src/app/
 WORKDIR /usr/src/app
 
 # install dependencies
-RUN apk add cairo
+RUN apt install -y lincairo2-dev.0
 RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
