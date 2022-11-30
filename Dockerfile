@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 # install dependencies
 RUN apt update \
-  && apt install -y lincairo2-dev.0
+  && apt install -y libcairo2-dev
 RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
