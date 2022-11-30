@@ -7,7 +7,8 @@ COPY . /usr/src/app/
 WORKDIR /usr/src/app
 
 # install dependencies
-RUN apt install -y lincairo2-dev.0
+RUN apt update \
+  && apt install -y lincairo2-dev.0
 RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
