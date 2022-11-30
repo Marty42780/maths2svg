@@ -53,7 +53,7 @@ def circularGraph(
     CircularGraphPointRadius = math.pi*centerxy/numberofpoints/(2+10/numberofpoints**2) # 140/numberofpoints+20 # x = 
     CircularGraphRadius = centerxy - 11*CircularGraphPointRadius/10 # numberofpoints*10+200 # 
 
-    dwg = svgwrite.Drawing('./Maths2SVG/gengraph.svg', profile='tiny')
+    dwg = svgwrite.Drawing('Maths2SVG/gengraph.svg', profile='tiny')
 
 
     if mainColor=='random':

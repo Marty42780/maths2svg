@@ -45,6 +45,4 @@ gunicorn app:app -w 2 --threads 3
 
 Founders of this project : [CameliaMallus](https://github.com/CameliaMallus) and [Marty42780](https://github.com/Marty42780).
 
------------------
-
 2022

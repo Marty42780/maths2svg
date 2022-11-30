@@ -14,4 +14,5 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
+EXPOSE 80
 ENTRYPOINT gunicorn app:app -w 2 --threads 3 -b 0.0.0.0:80

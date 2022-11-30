@@ -11,7 +11,7 @@ def index():
 @app.route("/image")
 def return_image():
     circularGraph()
-    return send_file('doc/graph.svg')
+    return send_file('Maths2SVG/gengraph.svg')
 
 @app.route("/style.css")
 def return_style():
@@ -22,4 +22,4 @@ def return_js():
     return send_file('web/script.js')
 
 if __name__ == '__main__':
-    app.run(debug=F, threaded=False)
+    app.run(debug=False, threaded=False)
