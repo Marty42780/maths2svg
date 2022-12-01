@@ -114,8 +114,16 @@ def circularGraph(
                     )
                     print(temp_points, "\n", graphInputs[point[1]][0])
                     drawn_arrow = dwg.path(d="M"+temp_points[0]+","+temp_points[1]+" C"+temp_points[2]+","+temp_points[3]+" "+temp_points[4]+","+temp_points[5]+" "+temp_points[6]+","+temp_points[7], stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10)) # , transform = 'rotate('+str(angle)+')')
-                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity).rotate(angle)
+                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity)
                     dwg.add(drawn_arrow)
+                    if oriented:
+                        drawn_arrow_marker = dwg.polygon(points=[
+                                (pointcoor[0]+CircularGraphPointRadius*math.cos(angle+math.pi/6), pointcoor[1]+CircularGraphPointRadius*math.sin(angle+math.pi/6)), 
+                                (pointcoor[0]+1.5*CircularGraphPointRadius*math.cos(angle+math.pi/6)-CircularGraphPointRadius*0.25*math.sin(angle+math.pi/6), pointcoor[1]+1.5*CircularGraphPointRadius*math.sin(angle+math.pi/6)+CircularGraphPointRadius*0.25*math.sin(angle+math.pi/6)),
+                                (pointcoor[0]+1.5*CircularGraphPointRadius*math.cos(angle+math.pi/6)+CircularGraphPointRadius*0.25*math.sin(angle+math.pi/6), pointcoor[1]+1.5*CircularGraphPointRadius*math.sin(angle+math.pi/6)-CircularGraphPointRadius*0.25*math.sin(angle+math.pi/6)), 
+                        ])
+                        drawn_arrow_marker.fill(arrowColor, opacity=globalOpacity)
+                        dwg.add(drawn_arrow_marker)
 
     for point in enumerate(graphInputs.keys()):
         if mainColor == 'random':
@@ -134,7 +142,7 @@ def circularGraph(
             pointLabel = point[1]
             if labelCapitalize:
                 pointLabel = point[1].upper()
-            point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]+2], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + labelColor + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
+            point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + labelColor + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
             dwg.add(point_name)
     
     dwg.save()
@@ -841,8 +849,8 @@ if __name__== "__main__":
         "zu":["aa"],
         "zv":["aa"],
         "zw":["aa"],
-        # "zx":["aa"],
-        # "zy":["aa"],
-        # "zz":["aa"],
+        "zx":["aa"],
+        "zy":["aa"],
+        "zz":["aa"],
         }
     )
