@@ -1,4 +1,4 @@
-name: docker_build
+name: main_docker_build
 
 on:
   push:

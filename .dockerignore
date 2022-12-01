@@ -3,3 +3,6 @@ Dockerfile
 README.md
 .git
 .gitignore
+doc/*
+__pycache__/
+Maths2SVG_env/
