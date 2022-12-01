@@ -11,7 +11,7 @@ def index():
 @app.route("/image")
 def return_image():
     circularGraph()
-    return send_file('./Maths2SVG/results/graph.svg')
+    return send_file('Maths2SVG/results/graph.svg')
 
 @app.route("/style.css")
 def return_style():

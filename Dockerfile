@@ -1,7 +1,7 @@
 FROM ubuntu
 
 # copy project
-COPY . /usr/src/app/
+COPY . /usr/src/app/  
 
 # set work directory
 WORKDIR /usr/src/app
@@ -11,7 +11,6 @@ RUN apt update \
   && apt install -y libcairo2-dev \
   && apt install -y python3-pip
 RUN pip install --upgrade pip
-COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 
 EXPOSE 80
