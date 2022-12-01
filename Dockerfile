@@ -1,10 +1,10 @@
 FROM ubuntu
 
 # copy project
-COPY . /usr/src/app/  
+COPY . /usr/src/app/
 
 # set work directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/
 
 # install dependencies
 RUN apt-get update \
@@ -12,7 +12,7 @@ RUN apt-get update \
   && apt-get install -y python3-pip
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN Maths2SVG/results
+RUN mkdir Maths2SVG/results
 
 EXPOSE 80
 ENTRYPOINT gunicorn app:app -w 2 --threads 3 -b 0.0.0.0:80
