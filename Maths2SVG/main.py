@@ -10,18 +10,18 @@ randomColors =  'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'bei
 
 
 def circularGraph(
-    fileType: str='svg',
+    fileType: str='png',
     graphInputs: dict={"Why": ["not"], "not": ["try"], "try": []},
     oriented: bool=True,
-    allowLoops: bool=False,
-    label: bool=False,
+    allowLoops: bool=True,
+    label: bool=True,
     labelCapitalize: bool=True,
-    outputSize: int=10000,
+    outputSize: int=1000,
     mainColor: str='random',
     bgColor: str='transparent',
     pointColor: str='transparent',
-    labelColor: str='black',
-    globalOpacity: float=1.0):
+    labelColor: str='random',
+    globalOpacity: float=0.5):
     
     """ Generate a circular graph of points and arrows.
     \n Parameters :
