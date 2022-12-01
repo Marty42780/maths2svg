@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
-    <title>Maths2SVG</title>
+    <title>Document</title>
   </head>
   <body onload="init_nb_of_points()">
     <h1>Math2SVG</h1>
@@ -75,20 +75,9 @@
           <!-- Label and Label-capitalized -->
           <input type="checkbox" id="label" class="pointer" checked />
           <label for="label">Show point names</label>
-          <div class="label-capitalize">
+          <div class="form-part label-capitalize">
             <input type="checkbox" id="label-capitalize" class="pointer" />
-            <label for="label-capitalize">Capitalize points names</label>
-          </div>
-        </div>
-        <div class="form-part">
-          <!-- Oriented and allowLoops -->
-          <div>
-            <input type="checkbox" id="oriented" class="pointer" checked />
-            <label for="oriented">Oriented graph (arrows instead of lines)</label>
-          </div>
-          <div>
-            <input type="checkbox" id="allowLoops" class="pointer"checked />
-            <label for="allowLoops">Allow arrows to point at their origin point </label>
+            <label for="label-capitalize">Catitalize points names</label>
           </div>
         </div>
         <div class="form-part">
@@ -97,7 +86,6 @@
           <select id="mainColorSelector" class="pointer">
             <option value="white">White</option>
             <option value="black">Black</option>
-            <!-- TODO: Propose custom hex and random -->
           </select>
         </div>
         <div class="form-part">
@@ -107,13 +95,12 @@
             <option value="transparent">Transparent</option>
             <option value="white">White</option>
             <option value="black">Black</option>
-            <!-- TODO: Propose custom hex and random -->
           </select>
         </div>
       </fieldset>
       <input
         type="button"
-        value="Generate"
+        value="Générer"
         onclick="generate()"
         class="submit-button pointer"
       />
@@ -126,7 +113,7 @@
         <a href="" id="result-button" target="_blank"><button class="pointer">Show</button></a>
         <!-- TODO: Import href from Generate() -->
         <div class="embed">
-          <!-- TODO: Customize texts and make copy button work -->
+          <p>Embed</p>
           <div>
             <p>Markdown</p>
             <div class="code">
@@ -134,7 +121,7 @@
                 <code>![]</code><code>(</code><code>https://lol.bat</code
                 ><code>)</code>
               </div>
-              <button>Copy</button>
+              <button>Copier</button>
             </div>
           </div>
           <div>
@@ -145,10 +132,9 @@
                 ><code>"</code><code>https://lol.bat</code><code>"</code
                 ><code>&gt;</code>
               </div>
-              <button>Copy</button>
+              <button>Copier</button>
             </div>
           </div>
-          <!-- TODO: Add URL -->
         </div>
       </fieldset>
     </div>

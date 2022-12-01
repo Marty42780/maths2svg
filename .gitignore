@@ -214,7 +214,14 @@ pip-selfcheck.json
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
-Maths2SVG/results/
-
+*.png
 *.svg
+*.pdf
 *.ps
+
+!doc/*.png
+!doc/*.svg
+!doc/*.pdf
+!doc/*.ps
+
+maincopy.py

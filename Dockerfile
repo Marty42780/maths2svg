@@ -1,18 +1,18 @@
-FROM ubuntu
+FROM python:3.10.6-alpine3.16
+
+# set work directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN pip install -r requirements.txt
 
 # copy project
 COPY . /usr/src/app/
 
-# set work directory
-WORKDIR /usr/src/app/
-
-# install dependencies
-RUN apt-get update \
-  && apt-get install -y libcairo2-dev \
-  && apt-get install -y python3-pip
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN mkdir Maths2SVG/results
-
-EXPOSE 80
-ENTRYPOINT gunicorn app:app -w 2 --threads 3 -b 0.0.0.0:80
+ENTRYPOINT ["/usr/src/app/run.sh"]

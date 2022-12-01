@@ -2,7 +2,7 @@ const default_point_names = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "
 
 function generate() {
     // Part to get fileType
-    let fileType = document.querySelector("input[name=\"image-type\"]:checked").value;
+    let fileType = "'" + document.querySelector("input[name=\"image-type\"]:checked").value + "'";
     // Part to get graphInputs
     let points_informations = document.querySelector("#points-information").children;
     let temp_default_point_names = default_point_names;
@@ -20,7 +20,6 @@ function generate() {
         };
         graphInputs += "\"" + points_informations[i].value + "\":[" + string_the_points_they_are_linked_to + "],";
     };
-    graphInputs = "{" + graphInputs + "}"
     // Part to get label
     if (document.querySelector("#label").checked == true) {
         label = "True";
@@ -33,28 +32,22 @@ function generate() {
     } else {
         labelCapitalize = "False";
     };
-    // Part to get oriented
-    if (document.querySelector("#oriented").checked == true) {
-        oriented = "True";
-    } else {
-        oriented = "False";
-    };
-    // Part to get allowLoops
-    if (document.querySelector("#allowLoops").checked == true) {
-        allowLoops = "True";
-    } else {
-        allowLoops = "False";
-    };
     // Part to get mainColor
     mainColor = document.querySelector("#mainColorSelector").value
-    // Part to get bgcolor
-    bgColor = document.querySelector("#backgroundColorSelector").value
+    // Part to get mainColor
+    bgColor = document.querySelector("#backgroundColorSelector")
+
+
     // Part to generate url
-    url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs + "&label=" + label + "&labelCapitalize=" + labelCapitalize + "&oriented=" + oriented + "&allowLoops=" + allowLoops + "&mainColor=" + mainColor + "&bgColor=" + bgColor;
+    url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs;
     document.querySelector("#generated-image").src = url;
     document.querySelectorAll("#result-button").forEach(element => { element.setAttribute("href", url); });
     document.getElementById("result").style.display = "flex";
 };
+
+
+
+
 function init_nb_of_points() {
     let nb_of_point_input = document.querySelector('#nb_of_point');
     let grid_of_points = document.querySelector("#points-information");
