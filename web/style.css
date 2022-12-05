@@ -97,9 +97,7 @@ form .submit-button {
 #result .embed .code div {
   display: flex;
   align-items: center;
-  /* text-overflow: ellipsis; */
   width: 75%;
-  overflow: hidden;
 }
 #result .embed .md-code code:nth-child(1) { color: #acb2bf; }
 #result .embed .md-code code:nth-child(2), #result .embed .md-code code:nth-child(4) { color: #d86d61; }
@@ -110,5 +108,11 @@ form .submit-button {
 #result .embed .html-code code:nth-child(5), #result .embed .html-code code:nth-child(6), #result .embed .html-code code:nth-child(7) { color: #9cc279;}
 #result .embed .html-code code:nth-child(6) { text-decoration: underline;}
 
+#result .embed code#insert_url { 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 250px;
+}
 
 

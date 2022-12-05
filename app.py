@@ -1,6 +1,5 @@
 from flask import Flask, send_file, request
-from Maths2SVG.main import circularGraph
-import math
+from Maths2SVG.main import circularGraph, CGdefaults
 import ast
 
 app = Flask(__name__)
@@ -13,17 +12,58 @@ def index():
 
 @app.route("/image")
 def return_image():
+    # TODO: Find a way to get parameters
     circularGraph(
-        fileType=request.args.get("fileType"),
-        graphInputs=ast.literal_eval(request.args.get("graphInputs")),
-        label = True if request.args.get("label") in ['True', 'pourquoi pas', 'avec plaisir'] else False,
-        labelCapitalize= True if request.args.get("labelCapitalize") in ['True', 'Si le coeur vous en dis', 'allez lets go', 'Tout le plaisir est pour moi'] else False,
-        oriented = True if request.args.get("oriented") in ['True', 'pourquoi pas', 'avec plaisir'] else False,
-        allowLoops = True if request.args.get("allowLoops") in ['True', 'Si le coeur vous en dis', 'allez lets go', 'Tout le plaisir est pour moi'] else False,
-        mainColor = request.args.get("mainColor"),
-        bgColor = request.args.get("bgColor")
+        fileType=request.args.get("fileType")
+        if not request.args.get("fileType") == None
+        else CGdefaults["fileType"],
+        graphInputs=ast.literal_eval(request.args.get("graphInputs"))
+        if not request.args.get("graphInputs") == None
+        else {
+            "Error": ["Error"],
+            "Give": ["me"],
+            "me": ["some"],
+            "some": ["points"],
+            "points": [],
+        },
+        label=True
+        if request.args.get("label") == "True"
+        else False
+        if not request.args.get("label") == None
+        else CGdefaults["label"],
+        labelCapitalize=True
+        if request.args.get("labelCapitalize") == "True"
+        else False
+        if not request.args.get("labelCapitalize") == None
+        else CGdefaults["labelCapitalize"],
+        oriented=True
+        if request.args.get("oriented") == "True"
+        else False
+        if not request.args.get("oriented") == None
+        else CGdefaults["oriented"],
+        allowLoops=True
+        if request.args.get("allowLoops") == "True"
+        else False
+        if not request.args.get("allowLoops") == None
+        else CGdefaults["allowLoops"],
+        mainColor=request.args.get("mainColor")
+        if not request.args.get("mainColor") == None
+        else CGdefaults["mainColor"],
+        bgColor=request.args.get("bgColor")
+        if not request.args.get("bgColor") == None
+        else CGdefaults["bgColor"],
     )
-    return send_file("Maths2SVG/results/graph." + request.args.get("fileType"))
+    return send_file(
+        "Maths2SVG/results/graph."
+        + (
+            request.args.get("fileType")
+            if not request.args.get("fileType") == None
+            else CGdefaults["fileType"]
+        )
+    )
+
+
+# TODO: Make no args work too
 
 
 @app.route("/style.css")
@@ -39,7 +79,7 @@ def return_js():
 if __name__ == "__main__":
     app.run(debug=False, threaded=False)
 
-''' Favicon : circularGraph(
+""" Favicon : circularGraph(
         fileType='svg',
         allowLoops=False,
         label=False,
@@ -53,5 +93,4 @@ if __name__ == "__main__":
         "ab":["ac"],
         "ac":["ad"],
         "ad":["aa"]  
-'''        
-
+"""
