@@ -21,14 +21,21 @@ function generate() {
             temp_default_point_names.shift();
         };
         // TODO: Correct slicing of values in html
-        for (var charindex = 0; charindex < points_informations[i+1].value.length; charindex++) {
-            if (points_informations[i+1].value.charAt(charindex) == ",") {
-                if (points_informations[i+1].value.charAt(charindex+1) != " ") {
-                    points_informations[i+1].value = [points_informations[i+1].value.slice(0, charindex+1), ' ', points_informations[i+1].value.slice(charindex+1)].join('');
-                    charindex++;
-                }
-            }
-          }
+        while (points_informations[i + 1].value.includes(",,")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(",,", ",");
+        };
+        while (points_informations[i + 1].value.includes("  ")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace("  ", " ");
+        };
+        while (points_informations[i + 1].value.includes(" ,")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(" ,", ",");
+        };
+        while (points_informations[i + 1].value.includes(",$")) {
+            // ... là
+        };
+        for (var charindex = 0; charindex < points_informations[i + 1].value.length; charindex++) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(",$", ", $"); // Deplacer ceci ...
+        };
         let list_of_the_points_they_are_linked_to = points_informations[i + 1].value.split(", ");
         let string_the_points_they_are_linked_to = "";
         if (list_of_the_points_they_are_linked_to[0] != "") {
@@ -72,7 +79,7 @@ function generate() {
     url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs + "&label=" + label + "&labelCapitalize=" + labelCapitalize + "&oriented=" + oriented + "&allowLoops=" + allowLoops + "&mainColor=" + mainColor + "&bgColor=" + bgColor;
     document.querySelector("#generated-image").src = url;
     document.querySelectorAll("#result-button").forEach(element => { element.setAttribute("href", url); });
-    document.querySelectorAll("#insert_url").forEach(element => {element.innerHTML = [document.baseURI.slice(0,-1), url].join('')});
+    document.querySelectorAll("#insert_url").forEach(element => { element.innerHTML = [document.baseURI.slice(0, -1), url].join('') });
     document.getElementById("result").style.display = "flex";
 };
 
@@ -90,7 +97,7 @@ function init_nb_of_points() {
     let grid_of_points = document.querySelector("#points-information");
     nb_of_point_input.addEventListener('change', (event) => { update_nb_of_points() });
     update_nb_of_points();
-};  
+};
 function update_nb_of_points() {
     let nb_of_point_input = document.querySelector('#nb_of_point');
     let grid_of_points = document.querySelector("#points-information");

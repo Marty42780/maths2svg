@@ -53,10 +53,10 @@ def circularGraph(
     \n - `label` : Show point names
     \n - `labelCapitalize` : Make point names uppercase
     \n - `outputSize` : Output file width=height (pixels)
-    \n - `mainColor` : Color of the arrows and point borders [can be 'random' or HTML color string]
-    \n - `bgColor` : Color behind the graph [can be 'transparent' or HTML color string]
-    \n - `pointColor` : Color of the points [can be 'transparent' or HTML color string]
-    \n - `labelColor` : Color of the point names [can be 'transparent' or HTML color string]
+    \n - `mainColor` : Color of the arrows and point borders [can be 'random'  or 'linkedrandom' ('linkedrandom'='random' if not oriented) or HTML color string]
+    \n - `bgColor` : Color behind the graph [can be 'transparent' or 'random' or HTML color string]
+    \n - `pointColor` : Color of the points [can be 'transparent' or 'random' or 'linkedrandom' or HTML color string]
+    \n - `labelColor` : Color of the point names [can be or 'random' or 'linkedrandom' or HTML color string]
     \n - `globalOpacity` : Opacity of the whole output
     \n A maximum a 3 characters (Latin or Cyrillic) for each point will be properly displayed.
     \n Graph proportion is automatic.
@@ -82,7 +82,7 @@ def circularGraph(
     dwg = svgwrite.Drawing('Maths2SVG/gengraph.svg', profile='tiny')
 
 
-    if mainColor=='random' or bgColor=='random' or pointColor=='random' or labelColor=='random':
+    if mainColor=='linkedrandom' or pointColor=='linkedrandom' or labelColor=='linkedrandom':
         for point in enumerate(graphInputs.keys()):
             graphInputs[point[1]].insert(0, ((math.cos(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius), (math.sin(point[0]*(insideAngle)-math.pi/2)*CircularGraphRadius)))
             graphInputs[point[1]].insert(1, (randomColors[random.randint(0, 146)]))
@@ -102,7 +102,12 @@ def circularGraph(
 
     for point in enumerate(graphInputs.keys()):
         if mainColor == 'random':
-            arrowColor = graphInputs[point[1]][1]
+            arrowColor = randomColors[random.randint(0, 146)]
+        elif mainColor == 'linkedrandom':
+            if oriented:
+                arrowColor = graphInputs[point[1]][1]
+            else:
+                arrowColor = randomColors[random.randint(0, 146)]
         else:
             arrowColor = mainColor
         for arrow in graphInputs[point[1]][1+slicefrom2:]:
@@ -124,10 +129,6 @@ def circularGraph(
                         dwg.add(drawn_arrow_marker)
 
                 elif allowLoops:
-                    if mainColor == 'random':
-                        strokeColor = graphInputs[point[1]][1]
-                    else:
-                        strokeColor = mainColor
                     angle = math.atan2((graphInputs[arrow][0][1]),(graphInputs[arrow][0][0]))
                     pointcoor = graphInputs[point[1]][0]
                     temp_points = (
@@ -140,8 +141,8 @@ def circularGraph(
                         str(pointcoor[0]+CircularGraphPointRadius*math.cos(angle+math.pi/6)), 
                         str(pointcoor[1]+CircularGraphPointRadius*math.sin(angle+math.pi/6))
                     )
-                    drawn_arrow = dwg.path(d="M"+temp_points[0]+","+temp_points[1]+" C"+temp_points[2]+","+temp_points[3]+" "+temp_points[4]+","+temp_points[5]+" "+temp_points[6]+","+temp_points[7], stroke=strokeColor, stroke_width=str(CircularGraphPointRadius/10)) # , transform = 'rotate('+str(angle)+')')
-                    drawn_arrow.fill('white', opacity=0.0).stroke(strokeColor, opacity = globalOpacity)
+                    drawn_arrow = dwg.path(d="M"+temp_points[0]+","+temp_points[1]+" C"+temp_points[2]+","+temp_points[3]+" "+temp_points[4]+","+temp_points[5]+" "+temp_points[6]+","+temp_points[7], stroke=arrowColor, stroke_width=str(CircularGraphPointRadius/10)) # , transform = 'rotate('+str(angle)+')')
+                    drawn_arrow.fill('white', opacity=0.0).stroke(arrowColor, opacity = globalOpacity)
                     dwg.add(drawn_arrow)
                     if oriented:
                         drawn_arrow_marker = dwg.polygon(points=[
@@ -154,35 +155,36 @@ def circularGraph(
 
     for point in enumerate(graphInputs.keys()):
         if mainColor == 'random':
+            strokeColor = randomColors[random.randint(0, 146)]
+        elif mainColor == 'linkedrandom':
             strokeColor = graphInputs[point[1]][1]
         else:
             strokeColor = mainColor
         small_circle = dwg.circle(center=graphInputs[point[1]][0], r=CircularGraphPointRadius)
         if pointColor!='transparent':
-            if pointColor!='random':
-                small_circle.fill(pointColor, opacity=globalOpacity).stroke(strokeColor, opacity=globalOpacity, width=CircularGraphPointRadius/5)
-            else:
+            if pointColor=='random':
+                small_circle.fill(randomColors[random.randint(0, 146)], opacity=globalOpacity/2).stroke(strokeColor, opacity=globalOpacity, width=CircularGraphPointRadius/5)
+            elif pointColor=='linkedrandom':
                 small_circle.fill(graphInputs[point[1]][1], opacity=globalOpacity/2).stroke(strokeColor, opacity=globalOpacity, width=CircularGraphPointRadius/5)
+            else:
+                small_circle.fill(pointColor, opacity=globalOpacity).stroke(strokeColor, opacity=globalOpacity, width=CircularGraphPointRadius/5)
 
         else:
             small_circle.fill('white', opacity=0.0).stroke(strokeColor, opacity=globalOpacity, width=CircularGraphPointRadius/5)
         dwg.add(small_circle)
 
     if label and labelColor != 'transparent':
-        if labelColor!='random':
-            for point in enumerate(graphInputs.keys()):
-                pointLabel = point[1]
-                if labelCapitalize:
-                    pointLabel = point[1].upper()
-                point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + labelColor + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
-                dwg.add(point_name)
-        else:
-            for point in enumerate(graphInputs.keys()):
-                pointLabel = point[1]
-                if labelCapitalize:
-                    pointLabel = point[1].upper()
+        for point in enumerate(graphInputs.keys()):
+            pointLabel = point[1]
+            if labelCapitalize:
+                pointLabel = point[1].upper()
+            if labelColor=='random':
+                point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + randomColors[random.randint(0, 146)] + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
+            elif labelColor=='linkedrandom':
                 point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + graphInputs[point[1]][1] + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
-                dwg.add(point_name)
+            else:
+                point_name = dwg.text(pointLabel, x=[graphInputs[point[1]][0][0]], y=[graphInputs[point[1]][0][1]], profile='full', alignment_baseline="middle", text_anchor="middle", style='fill:' + labelColor + ';  font-size: ' + str(7*CircularGraphPointRadius/10) + 'px; font-family: Arial, system-ui; opacity: '+str(globalOpacity)+';')
+            dwg.add(point_name)
 
     
     dwg.save()
@@ -190,22 +192,22 @@ def circularGraph(
 
     intertime = time.time()
 
-    if 'svg' in fileType:
+    if 'svg' in fileType.lower():
         print("Converted to SVG (Vectors)", end=" ")
         cairosvg.svg2svg(url="Maths2SVG/gengraph.svg", write_to="Maths2SVG/results/graph.svg", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
         print("in "+str(round((time.time()-intertime)*10000)/10)+" ms")
         intertime = time.time()
-    if 'png' in fileType:
+    if 'png' in fileType.lower():
         print("Converted to PNG ("+str(outputSize)+"x"+str(outputSize)+" px)", end=" ")
         cairosvg.svg2png(url="Maths2SVG/gengraph.svg", write_to="Maths2SVG/results/graph.png", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
         print("in "+str(round((time.time()-intertime)*10000)/10)+" ms")
         intertime = time.time()
-    if 'ps' in fileType:
+    if 'ps' in fileType.lower():
         print("Converted to PS (Vectors)", end=" ")
         cairosvg.svg2ps(url="Maths2SVG/gengraph.svg", write_to="Maths2SVG/results/graph.ps", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
         print("in "+str(round((time.time()-intertime)*10000)/10)+" ms")
         intertime = time.time()
-    if 'pdf' in fileType: 
+    if 'pdf' in fileType.lower(): 
         print("Converted to PDF (Vectors)", end=" ")
         cairosvg.svg2pdf(url="Maths2SVG/gengraph.svg", write_to="Maths2SVG/results/graph.pdf", output_width=outputSize+addLoopRad, output_height=outputSize+addLoopRad)
         print("in "+str(round((time.time()-intertime)*10000)/10)+" ms")
@@ -218,16 +220,16 @@ def circularGraph(
 
 if __name__== "__main__":
     circularGraph(
-        fileType='pngsvg', # Or a list
-        allowLoops=False,
-        label=True,
+        fileType='png', # Or a list
+        allowLoops=True,
+        label=False,
         globalOpacity=1,
         oriented=True,
-        outputSize=1000,
-        bgColor='random',
-        pointColor='random',
-        labelColor='random',
-        mainColor='random',
+        outputSize=16,
+        bgColor='transparent',
+        pointColor='linkedrandom',
+        labelColor='linkedrandom',
+        mainColor='linkedrandom',
         graphInputs={
         "aa":["ab"],
         "ab":["ac"],
