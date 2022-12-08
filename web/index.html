@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/favicon">
     <script src="script.js"></script>
     <title>Maths2SVG</title>
   </head>
@@ -27,7 +28,7 @@
         <div id="points-information">
           <label for="name-of-point">Name</label>
           <label for="points-they-are-linked-to"
-            >Points they are linked to</label
+            >Points they are linked to (separated by commas)</label
           >
           <input
             type="text"
@@ -95,9 +96,20 @@
           <!-- Main Color -->
           <label for="mainColorSelector">Main Color: </label>
           <select id="mainColorSelector" class="pointer">
-            <option value="white">White</option>
+            <option value="random">Random</option>
             <option value="black">Black</option>
-            <!-- TODO: Propose custom hex and random -->
+            <option value="white">White</option>
+            <!-- TODO: Propose custom hex -->
+          </select>
+        </div>
+        <div class="form-part">
+          <!-- Background Color -->
+          <label for="labelColorSelector">Label Color: </label>
+          <select id="labelColorSelector" class="pointer">
+            <option value="random">Random</option>
+            <option value="black">Black</option>
+            <option value="white">White</option>
+            <!-- TODO: Propose custom hex -->
           </select>
         </div>
         <div class="form-part">
@@ -105,9 +117,10 @@
           <label for="backgroundColorSelector">Background Color: </label>
           <select id="backgroundColorSelector" class="pointer">
             <option value="transparent">Transparent</option>
+            <option value="random">Random</option>
             <option value="white">White</option>
             <option value="black">Black</option>
-            <!-- TODO: Propose custom hex and random -->
+            <!-- TODO: Propose custom hex -->
           </select>
         </div>
       </fieldset>
@@ -124,17 +137,16 @@
         <img id="generated-image" />
         <a href="" id="result-button" target="_blank" download=""><button class="pointer">Download</button></a>
         <a href="" id="result-button" target="_blank"><button class="pointer">Show</button></a>
-        <!-- TODO: Import href from Generate() -->
         <div class="embed">
-          <!-- TODO: Customize texts and make copy button work -->
+          <!-- TODO: Make copy button work -->
           <div>
             <p>Markdown</p>
             <div class="code">
               <div class="md-code">
-                <code>![]</code><code>(</code><code>https://lol.bat</code
+                <code>![]</code><code>(</code><code id="insert_url">https://lol.bat</code
                 ><code>)</code>
               </div>
-              <button>Copy</button>
+              <button onclick="CopyToClipboard('insert_url')">Copy</button>
             </div>
           </div>
           <div>
@@ -142,10 +154,10 @@
             <div class="code">
               <div class="html-code">
                 <code>&lt;</code><code>img</code> <code>src</code><code>=</code
-                ><code>"</code><code>https://lol.bat</code><code>"</code
+                ><code>"</code><code id="insert_url">https://lol.bat</code><code>"</code
                 ><code>&gt;</code>
               </div>
-              <button>Copy</button>
+              <button onclick="CopyToClipboard('insert_url')">Copy</button>
             </div>
           </div>
           <!-- TODO: Add URL -->

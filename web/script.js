@@ -5,11 +5,36 @@ function generate() {
     let fileType = document.querySelector("input[name=\"image-type\"]:checked").value;
     // Part to get graphInputs
     let points_informations = document.querySelector("#points-information").children;
-    let temp_default_point_names = default_point_names;
+    let temp_default_point_names = default_point_names.slice();
+    // temp_default_point_names: deletion of values lower than the last value already present in the fields (to avoid having twice the last value in the names of the points)
+    for (let i = 2; i < points_informations.length; i += 2) {
+        if (points_informations[i].value != "") {
+            if (temp_default_point_names.includes(points_informations[i].value) == true) {
+                temp_default_point_names = temp_default_point_names.slice(temp_default_point_names.indexOf(points_informations[i].value) + 1)
+            }
+        }
+    };
     let graphInputs = "";
     for (let i = 2; i < points_informations.length; i += 2) {
         if (points_informations[i].value == "") {
-            points_informations[i].value = temp_default_point_names[0]; temp_default_point_names.shift();
+            points_informations[i].value = temp_default_point_names[0];
+            temp_default_point_names.shift();
+        };
+        // TODO: Correct slicing of values in html
+        while (points_informations[i + 1].value.includes(",,")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(",,", ",");
+        };
+        while (points_informations[i + 1].value.includes("  ")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace("  ", " ");
+        };
+        while (points_informations[i + 1].value.includes(" ,")) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(" ,", ",");
+        };
+        while (points_informations[i + 1].value.includes(",$")) {
+            // ... là
+        };
+        for (var charindex = 0; charindex < points_informations[i + 1].value.length; charindex++) {
+            points_informations[i + 1].value = points_informations[i + 1].value.replace(",$", ", $"); // Deplacer ceci ...
         };
         let list_of_the_points_they_are_linked_to = points_informations[i + 1].value.split(", ");
         let string_the_points_they_are_linked_to = "";
@@ -50,11 +75,23 @@ function generate() {
     // Part to get bgcolor
     bgColor = document.querySelector("#backgroundColorSelector").value
     // Part to generate url
+    document.querySelector("#generated-image").src = "";
     url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs + "&label=" + label + "&labelCapitalize=" + labelCapitalize + "&oriented=" + oriented + "&allowLoops=" + allowLoops + "&mainColor=" + mainColor + "&bgColor=" + bgColor;
     document.querySelector("#generated-image").src = url;
     document.querySelectorAll("#result-button").forEach(element => { element.setAttribute("href", url); });
+    document.querySelectorAll("#insert_url").forEach(element => { element.innerHTML = [document.baseURI.slice(0, -1), url].join('') });
     document.getElementById("result").style.display = "flex";
 };
+
+function CopyToClipboard(id) { // Thanks Arclab.com
+    var r = document.createRange();
+    r.selectNode(document.getElementById(id));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+};
+
 function init_nb_of_points() {
     let nb_of_point_input = document.querySelector('#nb_of_point');
     let grid_of_points = document.querySelector("#points-information");
