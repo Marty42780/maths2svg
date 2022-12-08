@@ -2,6 +2,8 @@ from flask import Flask, send_file, request
 from Maths2SVG.main import circularGraph, CGdefaults
 import ast
 
+# TODO Put all complex/weird stuff in an "advanced" section ?
+
 app = Flask(__name__)
 
 
@@ -75,22 +77,29 @@ def return_style():
 def return_js():
     return send_file("web/script.js")
 
+@app.route("/favicon")
+def return_favicon():
+    circularGraph(
+        fileType='svg',
+        allowLoops=False,    
+        label=False,    
+        globalOpacity=1,    
+        oriented=True,  
+        outputSize=2022,  
+        bgColor='transparent',  
+        pointColor='linkedrandom',  
+        labelColor='linkedrandom',  
+        mainColor='linkedrandom',   
+        graphInputs={   
+        "aa":["ab"],    
+        "ab":["ac"],    
+        "ac":["ad"],    
+        "ad":["aa"], 
+    }
+    )
+    return send_file("Maths2SVG/results/graph.svg")
+
 
 if __name__ == "__main__":
     app.run(debug=False, threaded=False)
 
-""" Favicon : circularGraph(
-        fileType='svg',
-        allowLoops=False,
-        label=False,
-        globalOpacity=1,
-        oriented=True,
-        bgColor='transparent',
-        pointColor='transparent',
-        mainColor='random',
-        graphInputs={
-        "aa":["ab"],
-        "ab":["ac"],
-        "ac":["ad"],
-        "ad":["aa"]  
-"""

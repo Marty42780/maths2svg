@@ -66,11 +66,6 @@ form .submit-button {
 }
 #result fieldset {
   margin-bottom: 1em;
-  width: -moz-available;          /* WebKit-based browsers will ignore this. */
-  width: -moz-available;          /* WebKit-based browsers will ignore this. */
-  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
-  width: fill-available;  /* Mozilla-based browsers will ignore this. */
-  width: fill-available;
 }
 #result img {
   width: 100%;
