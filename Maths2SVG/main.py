@@ -16,12 +16,12 @@ CGdefaults = {
     "oriented": True, 
     "allowLoops": True, 
     "label": True, 
-    "labelCapitalize": False,
+    "labelCapitalize": True,
     "outputSize": -1,
-    "mainColor": 'random',
+    "mainColor": 'linkedrandom',
     "bgColor": 'transparent',
-    "pointColor": 'transparent',
-    "labelColor": 'random',
+    "pointColor": 'linkedrandom',
+    "labelColor": 'linkedrandom',
     "globalOpacity": 1,
 }
 
@@ -221,16 +221,6 @@ def circularGraph(
 
 if __name__== "__main__":
     circularGraph(
-        fileType='png', # Or a list                 #favicon arguments
-        allowLoops=True,                    #favicon arguments
-        label=False,                    #favicon arguments
-        globalOpacity=1,                    #favicon arguments
-        oriented=True,                  #favicon arguments
-        outputSize=64,                  #favicon arguments
-        bgColor='transparent',                  #favicon arguments
-        pointColor='linkedrandom',                  #favicon arguments
-        labelColor='linkedrandom',                  #favicon arguments
-        mainColor='linkedrandom',                   #favicon arguments
         graphInputs={                   #favicon arguments
         "aa":["ab"],                    #favicon arguments
         "ab":["ac"],                    #favicon arguments

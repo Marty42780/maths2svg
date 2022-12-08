@@ -20,7 +20,6 @@ function generate() {
             points_informations[i].value = temp_default_point_names[0];
             temp_default_point_names.shift();
         };
-        // TODO: Correct slicing of values in html
         while (points_informations[i + 1].value.includes(",,")) {
             points_informations[i + 1].value = points_informations[i + 1].value.replace(",,", ",");
         };
@@ -30,12 +29,19 @@ function generate() {
         while (points_informations[i + 1].value.includes(" ,")) {
             points_informations[i + 1].value = points_informations[i + 1].value.replace(" ,", ",");
         };
-        while (points_informations[i + 1].value.includes(",$")) {
-            // ... là
-        };
+        // for (charindex = 0; charindex < points_informations[i + 1].value.length; charindex++) {
+        //     points_informations[i + 1].value = points_informations[i + 1].value.replace(",$", ", $"); 
+        //     console.log(charindex)
+        // };
+        // TODO: Remplace the not commented part by the commented part
         for (var charindex = 0; charindex < points_informations[i + 1].value.length; charindex++) {
-            points_informations[i + 1].value = points_informations[i + 1].value.replace(",$", ", $"); // Deplacer ceci ...
-        };
+            if (points_informations[i + 1].value.charAt(charindex) == ",") {
+                if (points_informations[i + 1].value.charAt(charindex + 1) != " ") {
+                    points_informations[i + 1].value = [points_informations[i + 1].value.slice(0, charindex + 1), ' ', points_informations[i + 1].value.slice(charindex + 1)].join('');
+                    charindex++;
+                }
+            }
+        }
         let list_of_the_points_they_are_linked_to = points_informations[i + 1].value.split(", ");
         let string_the_points_they_are_linked_to = "";
         if (list_of_the_points_they_are_linked_to[0] != "") {
@@ -72,11 +78,15 @@ function generate() {
     };
     // Part to get mainColor
     mainColor = document.querySelector("#mainColorSelector").value
-    // Part to get bgcolor
+    // Part to get labelColor
+    labelColor = document.querySelector("#labelColorSelector").value
+    // Part to get pointColor
+    pointColor = document.querySelector("#pointColorSelector").value
+    // Part to get bgColor
     bgColor = document.querySelector("#backgroundColorSelector").value
     // Part to generate url
     document.querySelector("#generated-image").src = "";
-    url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs + "&label=" + label + "&labelCapitalize=" + labelCapitalize + "&oriented=" + oriented + "&allowLoops=" + allowLoops + "&mainColor=" + mainColor + "&bgColor=" + bgColor;
+    url = "/image?fileType=" + fileType + "&graphInputs=" + graphInputs + "&label=" + label + "&labelCapitalize=" + labelCapitalize + "&oriented=" + oriented + "&allowLoops=" + allowLoops + "&mainColor=" + mainColor + "&labelColor=" + labelColor + "&pointColor=" + pointColor + "&bgColor=" + bgColor;
     document.querySelector("#generated-image").src = url;
     document.querySelectorAll("#result-button").forEach(element => { element.setAttribute("href", url); });
     document.querySelectorAll("#insert_url").forEach(element => { element.innerHTML = [document.baseURI.slice(0, -1), url].join('') });
