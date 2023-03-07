@@ -51,6 +51,12 @@ def return_image():
         mainColor=request.args.get("mainColor")
         if not request.args.get("mainColor") == None
         else CGdefaults["mainColor"],
+        labelColor=request.args.get("labelColor")
+        if not request.args.get("labelColor") == None
+        else CGdefaults["labelColor"],
+        pointColor=request.args.get("pointColor")
+        if not request.args.get("pointColor") == None
+        else CGdefaults["pointColor"],
         bgColor=request.args.get("bgColor")
         if not request.args.get("bgColor") == None
         else CGdefaults["bgColor"],
