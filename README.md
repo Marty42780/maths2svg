@@ -17,6 +17,13 @@
 ```bash
 apt install -y libcairo2-dev
 ```
+(On Windows, try WSL, or run the below commands, putting pipwin directory in %PATH%)
+```
+pip install pipwin
+
+pipwin install cairocffi
+```
+
 - Clone the repo and execute: 
 ```bash
 python3 -m venv venv
@@ -45,4 +52,5 @@ gunicorn app:app -w 2 --threads 3
 
 Founders of this project : [CameliaMallus](https://github.com/CameliaMallus) and [Marty42780](https://github.com/Marty42780).
 
-2022
+2022-2023  
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
