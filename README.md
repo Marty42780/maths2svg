@@ -1,6 +1,6 @@
 # Maths2svg
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Marty42780/Maths2SVG/docker_build?logo=Github)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Marty42780/maths2svg/main_docker_build.yml?branch=main&logo=Github)
 
 ## Graphs
 
